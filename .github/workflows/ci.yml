@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      # Push events on main branch
+      - main
+    # Sequence of patterns matched against refs/tags
+    tags: '*'
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.10.8'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+        exclude:
+          - os: macOS-latest
+            arch: x86
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: julia-actions/cache@v1
+      - name: Install dependencies
+        run: |
+          sudo apt-get install curl libcurl4-openssl-dev
+      - uses: actions/cache@v4
+        env:
+          cache-name: cache-artifacts
+        with:
+          path: ~/.julia/artifacts
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-test-${{ env.cache-name }}-
+            ${{ runner.os }}-test-
+            ${{ runner.os }}-
+      - name: Cache database and queries
+        id: cache-data
+        uses: actions/cache@v4
+        with:
+            path: data/**.h5
+            key: data
+
+      - name: Download database and queries
+        if: steps.cache-data.outputs.cache-hit != 'true'
+    
+        run: |
+          bash -x prepare-data.sh
+          mkdir data
+          cd data
+          
+      - uses: julia-actions/julia-buildpkg@v1
+      - name: Run benchmark
+        run: |
+          pwd
+          ls -l 
+          ls -l data
+          JULIA_PROJECT=. JULIA_NUM_THREADS=auto julia -e 'using Pkg; Pkg.instantiate()'
+          JULIA_PROJECT=. JULIA_NUM_THREADS=auto julia -L sisap2025.jl -e 'main_task1(); main_task2()'
+          # JULIA_PROJECT=. julia eval.jl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Results
+          path: | 
+            results-task*.csv
+            results-summary.txt
