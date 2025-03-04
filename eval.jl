@@ -124,12 +124,8 @@ function eval_task2(;
         (; algo=A["algo"], recall, totaltime, buildtime, optimtime, querytime, size=A["size"], resfile)
     end
     
-    display(Markdown.parse(join(["- $k: $v" for (k, v) in pairs(R)], "\n")))
-
-    open("result-task2.json", "w") do f
-        println(f, json(R))
-    end
+    D = DataFrame([R])
+    display(D)
+    CSV.write("result-task2.csv", D)
 end
-
-
 

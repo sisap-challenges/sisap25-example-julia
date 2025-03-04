@@ -62,7 +62,7 @@ JULIA_PROJECT=. julia -L eval.jl -e 'eval_task1()'
 JULIA_PROJECT=. julia -L eval.jl -e 'eval_task2()'
 ```
 
-Two result files will be created: `result-task1.csv` and `result-task2.json`.
+Two result files will be created: `result-task1.csv` and `result-task2.csv`.
 
 ## How to take this to create my own system
 You can fork this repository and polish it to create your solution. Please also take care of the ci workflow (see below).
