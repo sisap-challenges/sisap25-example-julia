@@ -62,9 +62,10 @@ function eval_task1(;
     end
 
     P = lineplot(title="query throughput vs recall -- $group",
-        xlabel="recall", ylabel="throughput (q/s)",
+        xlabel="recall", ylabel="q/s",
         height=25, width=60,
-        xlim=(0.3, 1.0), ylim=(0.0, maximum(D.throughput) * 1.05)
+        xlim=(0.3, 1.0), ylim=(0.0, maximum(D.throughput) * 1.05),
+        border=:ascii
         )
     for g in groupby(D, :algo)
         lineplot!(P, g.recall, g.throughput, name=g.algo[1])
@@ -93,8 +94,7 @@ end
 function eval_task2(; 
     goldfile = "data/allknn-benchmark-dev-ccnews.h5",
     resfile = only(glob("results/benchmark-dev-ccnews-fp16-allknn/*.h5")),
-    k=15,
-    minrecall = 0.8
+    k=15
 )
 
     G = read_gold(goldfile; k=k+1, group="")
@@ -124,7 +124,7 @@ function eval_task2(;
         (; algo=A["algo"], recall, totaltime, buildtime, optimtime, querytime, size=A["size"], resfile)
     end
     
-    Markdown.parse(join(["- $k: $v" for (k, v) in pairs(R)], "\n"))
+    display(Markdown.parse(join(["- $k: $v" for (k, v) in pairs(R)], "\n")))
 
     open("result-task2.json", "w") do f
         println(f, json(R))

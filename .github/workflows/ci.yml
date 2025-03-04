@@ -75,6 +75,6 @@ jobs:
           name: report
           path: | 
             report-*.txt
-            result-task1.txt
-            result-task2.txt
+            result-task1.csv
+            result-task2.json
 
