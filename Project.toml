@@ -1,13 +1,17 @@
 [deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 SearchModels = "0e966ebe-b704-4a65-8279-db954bfe5da0"
 SimilaritySearch = "053f045d-5466-53fd-b400-a066f88fe02a"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
-ProgressMeter = "v1.10"
-SearchModels = "v0.4"
-SimilaritySearch = "v0.12"
-StatsBase = "v0.34"
-Statistics = "v1.10"
+ProgressMeter = "1.10"
+SearchModels = "0.4"
+SimilaritySearch = "0.12"
+Statistics = "1.10"

@@ -98,8 +98,8 @@ function task1(;
         outdir,
         indexfile,
         maxvisits=0,
-        optim=MinRecall(0.97),
-        optimsearch=MinRecall(0.9),
+        optim,
+        optimsearch,
         neighborhood=Neighborhood(SatNeighborhood(; nndist=0.001); logbase=1.3),
     )
     dist = NormalizedCosine_asf32()  # 1 - dot(·, ·)
@@ -130,23 +130,21 @@ function task1(;
     run_search(G, ctx, queries, benchmark.k, meta, outdir, optimsearch; maxvisits)
 end
 
-function main_task1(; k::Int=30, outdir="results")
+function main_task1(; k::Int=30, outdir="results", optim=MinRecall(0.95), optimsearch=MinRecall(0.7), maxvisits=10^5)
     for file in glob("data/benchmark-dev-*.h5")
         name = replace(basename(file), ".h5" => "")
         indexfile = joinpath(outdir, "index-$(name).jl2")
-        benchmark = (; file, k, queries="itest/queries")
-        task1(; benchmark, indexfile, outdir=joinpath(outdir, "$name-itest"))
         benchmark = (; file, k, queries="otest/queries")
-        task1(; benchmark, indexfile, outdir=joinpath(outdir, "$name-otest"), maxvisits=10^9)
+        task1(; benchmark, indexfile, outdir=joinpath(outdir, "$name-otest"), optim, optimsearch, maxvisits)
     end
 end
 
 function task2(;
-        optim=MinRecall(0.97),
+        optim,
         benchmark,
         outdir,
         indexfile,
-        optimsearch=MinRecall(0.9),
+        optimsearch,
         neighborhood=Neighborhood(SatNeighborhood(; nndist=0.001); logbase=1.3),
     )
     dist = NormalizedCosine_asf32()  # 1 - dot(·, ·)
@@ -181,11 +179,11 @@ function task2(;
     save_results(knns, dists, meta, resfile) 
 end
 
-function main_task2(; k::Int=16, outdir="results")
+function main_task2(; k::Int=16, outdir="results", optim=MinRecall(0.95), optimsearch=MinRecall(0.8))
     for file in glob("data/benchmark-dev-*.h5")
         name = replace(basename(file), ".h5" => "")
         indexfile = joinpath(outdir, "index-$(name).jl2")
         benchmark = (; file, k)
-        task2(; benchmark, indexfile, outdir=joinpath(outdir, "$name-allknn"))
+        task2(; benchmark, indexfile, outdir=joinpath(outdir, "$name-allknn"), optim, optimsearch)
     end
 end
