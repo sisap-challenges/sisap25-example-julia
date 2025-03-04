@@ -12,10 +12,13 @@ The steps are the following:
 2. Fetch the datasets
 3. Instantiate the project
 4. Run
+5. Evaluation
 
 the fullset of instructions are listed in the GitHub Actions workflow
 
 <https://github.com/sisap-challenges/sisap25-example-julia/blob/main/.github/workflows/ci.yml>
+
+Note that you will need to adjust your scripts to hold the correct hyperparameters for any benchmark you use, in particular, `pubmed23` and `gooaq` which will be used in the testing stage.
 
 ### Clone this repository
 ```base
@@ -52,6 +55,14 @@ A similar procedure is needed to run; note that Julia may compile many packages 
 ```bash
 JULIA_PROJECT=. JULIA_NUM_THREADS=8 julia -L sisap2025.jl -e 'main_task1(); main_task2()'
 ```
+
+### Evaluation
+```bash
+JULIA_PROJECT=. julia -L eval.jl -e 'eval_task1()'
+JULIA_PROJECT=. julia -L eval.jl -e 'eval_task2()'
+```
+
+Two result files will be created: `result-task1.csv` and `result-task2.json`.
 
 ## How to take this to create my own system
 You can fork this repository and polish it to create your solution. Please also take care of the ci workflow (see below).
