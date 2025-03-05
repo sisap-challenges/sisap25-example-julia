@@ -3,8 +3,8 @@
 This repository is a working example for the SISAP 2025 Indexing Challenge <https://sisap-challenges.github.io/>, working with Julia and GitHub Actions, as specified in Task's descriptions. It is based on the previous year example.
 
 ## Steps for running
-It requires a working installation of Julia (better works with `v1.10.8`, note that `v1.11` series have performance regressions for our similarity search package). 
-You can download Julia from <https://julialang.org/downloads/>. You also need `git` tools and internet access for cloning and downloading datasets.
+It requires a working installation of Julia (better works with `v1.10.8`. _Note that `v1.11` series have performance regressions for our similarity search package_. 
+You can download Julia from <https://julialang.org/downloads/>. You also need `git` tools and internet access for cloning, install package dependencies and downloading datasets.
 
 The steps are the following:
 
@@ -44,17 +44,21 @@ ln -s SISAP2025 data
 ```
 
 ### Instantiate the project
-Julia requires to prepare the working directory through an `instantiation`, as follows:
+Julia requires to prepare the working directory through an `instantiation`, _a.k.a. installing dependencies_, as follows:
 
 ```bash
 JULIA_PROJECT=. JULIA_NUM_THREADS=8 julia -e 'using Pkg; Pkg.instantiate()'
 ```
+
+You need internet access for this step.
 
 ### Run
 A similar procedure is needed to run; note that Julia may compile many packages in the first run, so please be patient.
 ```bash
 JULIA_PROJECT=. JULIA_NUM_THREADS=8 julia -L sisap2025.jl -e 'main_task1(); main_task2()'
 ```
+
+You should modify the number of threads to adapt your hardware; you can also try to add optimization flags to julia, e.g., call it `julia -O3 -Cnative`. 
 
 ### Evaluation
 ```bash
