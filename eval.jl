@@ -34,7 +34,7 @@ function eval_task1(;
 
     # Some statistics about the gold standard 
     display(md"## Result analysis of your algorithm")
-    D = DataFrame(querytime=[], throughput=[], recall=[], buildtime=[], group=[], algo=[], optimtime=[], size=[], file=[])
+    D = DataFrame(dataset=[], task=[], querytime=[], throughput=[], recall=[], buildtime=[], group=[], algo=[], optimtime=[], size=[], file=[])
     numqueries = size(G.knns, 2)
     numinspect = 3
 
@@ -57,7 +57,7 @@ function eval_task1(;
                 """, dists)
             end
 
-            push!(D, (; algo=A["algo"], recall, group, buildtime=A["buildtime"], optimtime=A["optimtime"], querytime=A["querytime"], throughput=numqueries / A["querytime"], size=A["size"], file))
+            push!(D, (; dataset=A["dataset"], task=A["task"], algo=A["algo"], recall, group, buildtime=A["buildtime"], optimtime=A["optimtime"], querytime=A["querytime"], throughput=numqueries / A["querytime"], size=A["size"], file))
         end
     end
 
@@ -120,8 +120,10 @@ function eval_task2(;
         buildtime = A["buildtime"]
         optimtime = A["optimtime"]
         querytime = A["querytime"]
+        task = A["task"]
+        dataset = A["dataset"]
         totaltime = buildtime + optimtime + querytime
-        (; algo=A["algo"], recall, totaltime, buildtime, optimtime, querytime, size=A["size"], resfile)
+        (; dataset, task, algo=A["algo"], recall, totaltime, buildtime, optimtime, querytime, size=A["size"], resfile)
     end
     
     D = DataFrame([R])

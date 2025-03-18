@@ -35,6 +35,8 @@ function save_results(knns::Matrix, dists::Matrix, meta, resfile::AbstractString
         A["params"] = meta["params"]
         A["searchparams"] = meta["searchparams"]
         A["size"] = meta["size"]
+        A["task"] = meta["task"]
+        A["dataset"] = meta["dataset"]
     end
 end
 
@@ -124,6 +126,12 @@ function task1(;
     end
     meta = Dict()
     meta["algo"] = "ABS"
+    meta["task"] = "task1"
+    meta["dataset"] = let dataset = basename(outdir)
+        dataset = replace(dataset, r"-[io]test" => "")
+        dataset = replace(dataset, "benchmark-" => "")
+        replace(dataset, "dev-" => "")
+    end
     meta["buildtime"] = buildtime
     meta["params"] = pretty_params(string("fp16; ", optim, "; ", neighborhood))
     meta["size"] = length(db)
@@ -169,6 +177,12 @@ function task2(;
 
     meta = Dict()
     meta["algo"] = "ABS"
+    meta["task"] = "task2"
+    meta["dataset"] = let dataset = basename(outdir)
+        dataset = replace(dataset, "-allknn" => "")
+        dataset = replace(dataset, "benchmark-" => "")
+        replace(dataset, "dev-" => "")
+    end
     meta["buildtime"] = buildtime
     meta["params"] = pretty_params(string("fp16; ", optim, "; ", neighborhood))
     meta["size"] = length(db)
