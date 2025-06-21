@@ -2,6 +2,7 @@
 
 This repository is a working example for the SISAP 2025 Indexing Challenge <https://sisap-challenges.github.io/>, working with Julia and GitHub Actions, as specified in Task's descriptions. It is based on the previous year example.
 
+You can find the code for the evaluation stage is in the `eval` branch <https://github.com/sisap-challenges/sisap25-example-julia/tree/eval>.
 ## Steps for running
 It requires a working installation of Julia (better works with `v1.10.8`. _Note that `v1.11` series have performance regressions for our similarity search package_. 
 You can download Julia from <https://julialang.org/downloads/>. You also need `git` tools and internet access for cloning, install package dependencies and downloading datasets.
