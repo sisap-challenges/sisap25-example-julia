@@ -1,12 +1,24 @@
 # Define base image/operating system
-FROM julia:1.10.9
+FROM ubuntu:22.04
 
-WORKDIR /sisap25
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install software
+#RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl ca-certificates
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates
+RUN curl -O https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.8-linux-x86_64.tar.gz 
+RUN tar xvfz julia-1.10.8-linux-x86_64.tar.gz
+RUN rm -f julia-1.10.8-linux-x86_64.tar.gz
 
 # Copy files and directory structure to working directory
 COPY . . 
+#COPY bashrc ~/.bashrc
 
-RUN JULIA_PROJECT=. julia -t8 -Cnative -O3 -e 'using Pkg; Pkg.instantiate(); '
-RUN JULIA_PROJECT=. julia -t8 -Cnative -O3 sisap2025.jl
+SHELL ["/bin/bash", "--login", "-c"]
+ENV PATH=/julia-1.10.8/bin:${PATH}
+RUN JULIA_PROJECT=. julia -e 'using Pkg; Pkg.instantiate()'
 
-#ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
+# Run commands specified in "run.sh" to get started
+
+ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
+#ENTRYPOINT [ "/bin/bash", "/sisap23-run.sh"]
